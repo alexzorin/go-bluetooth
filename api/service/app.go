@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/godbus/dbus/introspect"
 	"github.com/muka/go-bluetooth/api"
@@ -13,7 +15,6 @@ import (
 	"github.com/muka/go-bluetooth/bluez/profile/advertising"
 	"github.com/muka/go-bluetooth/bluez/profile/agent"
 	"github.com/muka/go-bluetooth/bluez/profile/gatt"
-	log "github.com/sirupsen/logrus"
 )
 
 // AppInterface default namespace
@@ -96,9 +97,9 @@ type App struct {
 
 func (app *App) init() error {
 
-	// log.Tracef("Exposing %s", app.Path())
+	// log.Printf("Exposing %s", app.Path())
 
-	// log.Trace("Load adapter")
+	// log.Println("Load adapter")
 	a, err := adapter.NewAdapter1FromAdapterID(app.adapterID)
 	if err != nil {
 		return err
@@ -199,7 +200,7 @@ func (app *App) ExportTree() (err error) {
 // Run initialize the application
 func (app *App) Run() (err error) {
 
-	log.Tracef("Expose %s (%s)", app.Path(), bluez.ObjectManagerInterface)
+	log.Printf("Expose %s (%s)", app.Path(), bluez.ObjectManagerInterface)
 	err = app.conn.Export(app.objectManager, app.Path(), bluez.ObjectManagerInterface)
 	if err != nil {
 		return err
@@ -234,20 +235,20 @@ func (app *App) Close() {
 
 		err := agent.RemoveAgent(app.agent)
 		if err != nil {
-			log.Warnf("RemoveAgent: %s", err)
+			log.Printf("RemoveAgent: %s", err)
 		}
 
 		// err =
 		app.agent.Release()
 		// if err != nil {
-		// 	log.Warnf("Agent1.Release: %s", err)
+		// 	log.Printf("Agent1.Release: %s", err)
 		// }
 	}
 
 	if app.gm != nil {
 		err1 := app.gm.UnregisterApplication(app.Path())
 		if err1 != nil {
-			log.Warnf("GattManager1.UnregisterApplication: %s", err1)
+			log.Printf("GattManager1.UnregisterApplication: %s", err1)
 		}
 	}
 }

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
+	"log"
 )
 
 // Mkdir Create a dir if not exists
@@ -48,7 +48,7 @@ func ListFiles(dir string) ([]string, error) {
 	})
 
 	if err != nil {
-		log.Errorf("Failed to list files: %s", err)
+		log.Printf("Failed to list files: %s", err)
 		return list, nil
 	}
 

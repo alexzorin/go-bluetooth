@@ -9,8 +9,9 @@ import (
 	"sync"
 	"unsafe"
 
+	"log"
+
 	"github.com/pkg/errors"
-	log "github.com/sirupsen/logrus"
 	"golang.org/x/sys/unix"
 )
 
@@ -113,14 +114,14 @@ func open(fd, id int) (*Socket, error) {
 	pfds := []unix.PollFd{{Fd: int32(fd), Events: unix.POLLIN}}
 	_, err := unix.Poll(pfds, 20)
 	if err != nil {
-		log.Error(err)
+		log.Println(err)
 	}
 
 	if pfds[0].Revents&unix.POLLIN > 0 {
 		b := make([]byte, 100)
 		_, err = unix.Read(fd, b)
 		if err != nil {
-			log.Error(err)
+			log.Println(err)
 		}
 	}
 
@@ -157,7 +158,7 @@ func (s *Socket) Close() error {
 	close(s.closed)
 	_, err := s.Write([]byte{0x01, 0x09, 0x10, 0x00}) // no-op command to wake up the Read call if it's blocked
 	if err != nil {
-		log.Error(err)
+		log.Println(err)
 	}
 
 	s.rmu.Lock()

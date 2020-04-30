@@ -3,11 +3,12 @@ package service
 import (
 	"fmt"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/api"
 	"github.com/muka/go-bluetooth/bluez"
 	"github.com/muka/go-bluetooth/bluez/profile/gatt"
-	log "github.com/sirupsen/logrus"
 )
 
 type Service struct {
@@ -107,7 +108,7 @@ func (s *Service) AddChar(char *Char) error {
 		return err
 	}
 
-	log.Tracef("Added GATT Characteristic UUID=%s %s", char.UUID, char.Path())
+	log.Printf("Added GATT Characteristic UUID=%s %s", char.UUID, char.Path())
 
 	err = s.App().ExportTree()
 	return err

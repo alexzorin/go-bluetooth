@@ -3,10 +3,11 @@ package api
 import (
 	"fmt"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/bluez"
 	"github.com/muka/go-bluetooth/bluez/profile/advertising"
-	log "github.com/sirupsen/logrus"
 )
 
 // const baseAdvertismentPath = "/org/bluez/%s/apps/advertisement%d"
@@ -89,7 +90,7 @@ func NewAdvertisement(adapterID string, props *advertising.LEAdvertisement1Prope
 // Expose to bluez an advertisment instance via the adapter advertisement manager
 func ExposeAdvertisement(adapterID string, props *advertising.LEAdvertisement1Properties, discoverableTimeout uint32) (func(), error) {
 
-	log.Tracef("Retrieving adapter instance %s", adapterID)
+	log.Printf("Retrieving adapter instance %s", adapterID)
 	a, err := GetAdapter(adapterID)
 	if err != nil {
 		return nil, err
@@ -105,7 +106,7 @@ func ExposeAdvertisement(adapterID string, props *advertising.LEAdvertisement1Pr
 		return nil, err
 	}
 
-	log.Debug("Setup adapter")
+	log.Println("Setup adapter")
 	err = a.SetDiscoverable(true)
 	if err != nil {
 		return nil, err
@@ -120,7 +121,7 @@ func ExposeAdvertisement(adapterID string, props *advertising.LEAdvertisement1Pr
 		return nil, err
 	}
 
-	log.Trace("Registering LEAdvertisement1 instance")
+	log.Println("Registering LEAdvertisement1 instance")
 	advManager, err := advertising.NewLEAdvertisingManager1FromAdapterID(adapterID)
 	if err != nil {
 		return nil, err
@@ -135,11 +136,11 @@ func ExposeAdvertisement(adapterID string, props *advertising.LEAdvertisement1Pr
 		decreaseAdvertismentCounter()
 		err := advManager.UnregisterAdvertisement(adv.Path())
 		if err != nil {
-			log.Warn(err)
+			log.Println(err)
 		}
 		err = a.SetProperty("Discoverable", false)
 		if err != nil {
-			log.Warn(err)
+			log.Println(err)
 		}
 	}
 

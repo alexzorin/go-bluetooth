@@ -1,8 +1,9 @@
 package service
 
 import (
+	"log"
+
 	"github.com/godbus/dbus"
-	log "github.com/sirupsen/logrus"
 )
 
 // Set the Read callback, called when a client attempt to read
@@ -20,7 +21,7 @@ func (s *Descr) OnWrite(fx DescrWriteCallback) *Descr {
 //ReadValue read a value
 func (s *Descr) ReadValue(options map[string]interface{}) ([]byte, *dbus.Error) {
 
-	log.Trace("Descr.ReadValue")
+	log.Println("Descr.ReadValue")
 
 	if s.readCallback != nil {
 		b, err := s.readCallback(s, options)
@@ -36,18 +37,18 @@ func (s *Descr) ReadValue(options map[string]interface{}) ([]byte, *dbus.Error) 
 //WriteValue write a value
 func (s *Descr) WriteValue(value []byte, options map[string]interface{}) *dbus.Error {
 
-	log.Trace("Descr.WriteValue")
+	log.Println("Descr.WriteValue")
 
 	val := value
 	if s.writeCallback != nil {
-		log.Trace("Used write callback")
+		log.Println("Used write callback")
 		b, err := s.writeCallback(s, value)
 		val = b
 		if err != nil {
 			return dbus.MakeFailedError(err)
 		}
 	} else {
-		log.Trace("Store directly to value (no callback)")
+		log.Println("Store directly to value (no callback)")
 	}
 
 	// TODO update on Properties interface

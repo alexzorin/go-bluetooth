@@ -131,8 +131,8 @@ func (b *Beacon) parserIBeacon(manufacturerData map[uint16]interface{}) bool {
 		return false
 	}
 	if frames, ok := manufacturerData[appleBit]; ok {
-		// log.Debug("Found iBeacon")
-		// log.Debugf("iBeacon data: %d", frames)
+		// log.Println("Found iBeacon")
+		// log.Printf("iBeacon data: %d", frames)
 		b.Type = BeaconTypeIBeacon
 		b.iBeacon = b.ParseIBeacon(frames.([]byte))
 		return true
@@ -150,9 +150,9 @@ func (b *Beacon) parserEddystone(UUIDs []string, serviceData map[string]interfac
 
 		if strings.ToUpper(uuid) == eddystoneSrvcUid {
 			if data, ok := serviceData[srcUUID]; ok {
-				// log.Debug("Found Eddystone")
+				// log.Println("Found Eddystone")
 				b.Type = BeaconTypeEddystone
-				// log.Debugf("Eddystone data: %d", data)
+				// log.Printf("Eddystone data: %d", data)
 				b.eddystone = b.ParseEddystone(data.([]byte))
 				return true
 			}

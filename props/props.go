@@ -4,11 +4,12 @@ import (
 	"reflect"
 	"strings"
 
+	"log"
+
 	"github.com/fatih/structs"
 	"github.com/godbus/dbus"
 	"github.com/godbus/dbus/prop"
 	"github.com/muka/go-bluetooth/bluez"
-	log "github.com/sirupsen/logrus"
 )
 
 type PropInfo struct {
@@ -29,7 +30,7 @@ func ParseProperties(propertyVal bluez.Properties) map[string]*PropInfo {
 		}
 
 		// if _, ok := field.Value().(dbus.ObjectPath); ok && field.IsZero() {
-		// 	log.Debugf("parseProperties: skip empty ObjectPath %s", field.Name())
+		// 	log.Printf("parseProperties: skip empty ObjectPath %s", field.Name())
 		// 	continue
 		// }
 
@@ -61,17 +62,17 @@ func ParseProperties(propertyVal bluez.Properties) map[string]*PropInfo {
 
 					checkField, ok := t.FieldOk(tagValue)
 					if !ok {
-						log.Warnf("%s: field not found,  is it avaialable?", tagValue)
+						log.Printf("%s: field not found,  is it avaialable?", tagValue)
 						continue
 					}
 					if !checkField.IsExported() {
-						log.Warnf("%s: field must be exported. (add a tag `ignore` to avoid exposing it as property)", tagValue)
+						log.Printf("%s: field must be exported. (add a tag `ignore` to avoid exposing it as property)", tagValue)
 						continue
 					}
 
 					varKind := checkField.Kind()
 					if varKind != reflect.Bool {
-						log.Warnf("%s: ignore tag expect a bool property to check, %s given", tagValue, varKind)
+						log.Printf("%s: ignore tag expect a bool property to check, %s given", tagValue, varKind)
 						continue
 					}
 

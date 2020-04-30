@@ -1,6 +1,8 @@
 package api
 
 import (
+	"log"
+
 	"github.com/fatih/structs"
 	"github.com/godbus/dbus"
 	"github.com/godbus/dbus/introspect"
@@ -8,7 +10,6 @@ import (
 	"github.com/muka/go-bluetooth/bluez"
 	"github.com/muka/go-bluetooth/bluez/profile"
 	"github.com/muka/go-bluetooth/props"
-	log "github.com/sirupsen/logrus"
 )
 
 // NewDBusProperties create a new instance
@@ -46,12 +47,12 @@ func (p *DBusProperties) onChange(ev *prop.Change) *dbus.Error {
 	if _, ok := p.propsConfig[ev.Iface]; ok {
 		if conf, ok := p.propsConfig[ev.Iface][ev.Name]; ok {
 			if conf.Writable {
-				log.Debugf("Set %s.%s", ev.Iface, ev.Name)
+				log.Printf("Set %s.%s", ev.Iface, ev.Name)
 				prop := p.props[ev.Iface]
 				s := structs.New(prop)
 				err := s.Field(ev.Name).Set(ev.Value)
 				if err != nil {
-					log.Errorf("Failed to set %s.%s: %s", ev.Iface, ev.Name, err.Error())
+					log.Printf("Failed to set %s.%s: %s", ev.Iface, ev.Name, err.Error())
 					return &profile.ErrRejected
 				}
 			}
@@ -68,7 +69,7 @@ func (p *DBusProperties) Instance() *prop.Properties {
 //Introspection return the props instance
 func (p *DBusProperties) Introspection(iface string) []introspect.Property {
 	res := p.instance.Introspection(iface)
-	// log.Debug("Introspect", res)
+	// log.Println("Introspect", res)
 	return res
 }
 

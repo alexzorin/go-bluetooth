@@ -6,8 +6,9 @@ import (
 	"regexp"
 	"strings"
 
+	"log"
+
 	"github.com/muka/go-bluetooth/gen/types"
-	log "github.com/sirupsen/logrus"
 )
 
 // NewMethodParser
@@ -41,13 +42,13 @@ func (g *MethodParser) Parse(raw []byte) (*types.Method, error) {
 		rtype = strings.Trim(rtype, " \t")
 		for _, srtype := range strings.Split(rtype, ",") {
 			if len(strings.Split(strings.Trim(srtype, " "), " ")) > 2 {
-				// log.Warnf("****** %s | %s", strings.Trim(srtype, " "), strings.Split(strings.Trim(srtype, " "), " "))
+				// log.Printf("****** %s | %s", strings.Trim(srtype, " "), strings.Split(strings.Trim(srtype, " "), " "))
 				return g.model, fmt.Errorf("Method %s return type contains space: `%s`", method.Name, rtype)
 			}
 		}
 
 		if len(rtype) > 20 {
-			log.Warnf("Return type value is too long? `%s`", rtype)
+			log.Printf("Return type value is too long? `%s`", rtype)
 		}
 
 		method.ReturnType = rtype
@@ -110,7 +111,7 @@ func (g *MethodParser) Parse(raw []byte) (*types.Method, error) {
 	// }
 
 	if g.debug {
-		log.Debugf("\t - %s", method)
+		log.Printf("\t - %s", method)
 	}
 
 	return method, err

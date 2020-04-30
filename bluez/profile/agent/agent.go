@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"strings"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/godbus/dbus/introspect"
 	"github.com/muka/go-bluetooth/bluez"
 	"github.com/muka/go-bluetooth/bluez/profile/adapter"
-	log "github.com/sirupsen/logrus"
 )
 
 //All agent capabilities
@@ -37,7 +38,7 @@ type Agent1Client interface {
 // SetTrusted lookup for a device by object path and set it to trusted
 func SetTrusted(adapterID string, devicePath dbus.ObjectPath) error {
 
-	log.Tracef("Trust device %s on %s", devicePath, adapterID)
+	log.Printf("Trust device %s on %s", devicePath, adapterID)
 
 	a, err := adapter.GetAdapter(adapterID)
 	if err != nil {
@@ -52,12 +53,12 @@ func SetTrusted(adapterID string, devicePath dbus.ObjectPath) error {
 	path := string(devicePath)
 	for _, dev := range devices {
 		if strings.Contains(string(dev.Path()), path) {
-			log.Tracef("SetTrusted: Trust device at %s", path)
+			log.Printf("SetTrusted: Trust device at %s", path)
 			err := dev.SetTrusted(true)
 			if err != nil {
 				return fmt.Errorf("SetTrusted error: %s", err)
 			}
-			log.Tracef("SetTrusted: OK")
+			log.Printf("SetTrusted: OK")
 			return nil
 		}
 	}
@@ -117,7 +118,7 @@ func ExposeAgent(conn *dbus.Conn, ag Agent1Client, caps string, setAsDefaultAgen
 //ExportAgent exports the xml of a go agent to dbus
 func exportAgent(conn *dbus.Conn, ag Agent1Client) error {
 
-	log.Tracef("Exposing Agent1 at %s", ag.Path())
+	log.Printf("Exposing Agent1 at %s", ag.Path())
 
 	//Export the given agent to the given path as interface "org.bluez.Agent1"
 	err := conn.Export(ag, ag.Path(), ag.Interface())

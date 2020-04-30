@@ -3,8 +3,9 @@ package parser
 import (
 	"regexp"
 
+	"log"
+
 	"github.com/muka/go-bluetooth/gen/types"
-	log "github.com/sirupsen/logrus"
 )
 
 type ApiParser struct {
@@ -34,7 +35,7 @@ func (g *ApiParser) Parse(raw []byte) (*types.Api, error) {
 	api.Description = string(raw[matches[4]:matches[5]])
 
 	if g.debug {
-		log.Debugf("= %s", api.Title)
+		log.Printf("= %s", api.Title)
 	}
 
 	raw = raw[matches[5]:]
@@ -48,9 +49,9 @@ func (g *ApiParser) Parse(raw []byte) (*types.Api, error) {
 	api.ObjectPath = string(raw[matches[6]:matches[7]])
 
 	if g.debug {
-		log.Debugf("\tService %s", api.Service)
-		log.Debugf("\tInterface %s", api.Interface)
-		log.Debugf("\tObjectPath %s", api.ObjectPath)
+		log.Printf("\tService %s", api.Service)
+		log.Printf("\tInterface %s", api.Interface)
+		log.Printf("\tObjectPath %s", api.ObjectPath)
 	}
 
 	raw = raw[matches[7]:]

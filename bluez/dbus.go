@@ -3,8 +3,9 @@ package bluez
 import (
 	"errors"
 
+	"log"
+
 	"github.com/godbus/dbus"
-	log "github.com/sirupsen/logrus"
 )
 
 //Properties dbus serializable struct
@@ -47,7 +48,7 @@ func CloseConnections() (err error) {
 		if conn != nil {
 			err = conn.Close()
 			if err != nil {
-				log.Warnf("Close: %s", err)
+				log.Printf("Close: %s", err)
 			}
 		}
 	}

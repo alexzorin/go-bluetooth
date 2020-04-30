@@ -1,8 +1,9 @@
 package api
 
 import (
+	"log"
+
 	"github.com/muka/go-bluetooth/bluez/profile/adapter"
-	log "github.com/sirupsen/logrus"
 )
 
 // Discover start device discovery
@@ -47,7 +48,7 @@ func Discover(
 	cancel := func() {
 		err := a.StopDiscovery()
 		if err != nil {
-			log.Warnf("Error stopping discovery: %s", err)
+			log.Printf("Error stopping discovery: %s", err)
 		}
 		discoveryCancel()
 	}

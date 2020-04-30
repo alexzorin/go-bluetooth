@@ -17,7 +17,7 @@ func isDefaultService(s string) bool {
 
 func createConstructors(api *types.Api) []types.Constructor {
 
-	// log.Debugf("-------------------------------------- %s", api.Interface)
+	// log.Printf("-------------------------------------- %s", api.Interface)
 
 	constructors := []types.Constructor{}
 	constructors = inspectServiceName(api.Service, constructors)
@@ -66,7 +66,7 @@ func createConstructors(api *types.Api) []types.Constructor {
 			if coverride.AdapterAsArgument {
 
 				for _, c1 := range constructors {
-					// log.Debugf("------ oveerride %+v", c1)
+					// log.Printf("------ oveerride %+v", c1)
 
 					c := types.Constructor{
 						Args:       "adapterID string",
@@ -85,15 +85,15 @@ func createConstructors(api *types.Api) []types.Constructor {
 
 	}
 
-	// log.Debugf("constructors %++v", constructors)
+	// log.Printf("constructors %++v", constructors)
 
 	return constructors
 }
 
 func inspectServiceName(serviceName string, constructors []types.Constructor) []types.Constructor {
 
-	// log.Debugf("ObjectPath %s", api.ObjectPath)
-	// log.Debugf("Interface %s", api.Interface)
+	// log.Printf("ObjectPath %s", api.ObjectPath)
+	// log.Printf("Interface %s", api.Interface)
 
 	apiService := serviceName
 	if apiService != "" {
@@ -102,7 +102,7 @@ func inspectServiceName(serviceName string, constructors []types.Constructor) []
 
 	if !isDefaultService(apiService) {
 
-		// log.Debugf("Service %s", apiService)
+		// log.Printf("Service %s", apiService)
 
 		// case 1
 		// unique name (Target role)
@@ -112,7 +112,7 @@ func inspectServiceName(serviceName string, constructors []types.Constructor) []
 			re := regexp.MustCompile(`(.+) \((.+?) .+\)`)
 			matches1 := re.FindAllSubmatch([]byte(serviceName), -1)
 
-			// log.Debugf("%s ----> %s", serviceName, matches1)
+			// log.Printf("%s ----> %s", serviceName, matches1)
 
 			for _, m1 := range matches1 {
 
@@ -166,14 +166,14 @@ func inspectObjectPath(objectPath string, constructors []types.Constructor) []ty
 
 	constructors2 := []types.Constructor{}
 
-	// log.Debugf("%d %s", len(constructors), objectPath)
-	// log.Debugf("%+v", constructors)
+	// log.Printf("%d %s", len(constructors), objectPath)
+	// log.Printf("%+v", constructors)
 
 	for _, c := range constructors {
 
 		if strings.Contains(objectPath, "\n") {
 
-			// log.Debugf("ObjectPath: \n----\n%s\n\n-----", objectPath)
+			// log.Printf("ObjectPath: \n----\n%s\n\n-----", objectPath)
 
 			anchor1 := " (Target role)"
 			idx := strings.Index(objectPath, anchor1)
@@ -232,7 +232,7 @@ func inspectObjectPath(objectPath string, constructors []types.Constructor) []ty
 		isDefaultPath := len(objectPath) >= len(defaultObjectPath) && objectPath[:len(defaultObjectPath)] == defaultObjectPath
 		pathHasVariables := strings.Contains(objectPath, "{")
 
-		// log.Debugf("%s %t %t", objectPath, isDefaultPath, pathHasVariables)
+		// log.Printf("%s %t %t", objectPath, isDefaultPath, pathHasVariables)
 
 		if !isDefaultPath || pathHasVariables {
 			c.ObjectPath = ""
@@ -241,7 +241,7 @@ func inspectObjectPath(objectPath string, constructors []types.Constructor) []ty
 			c.ObjectPath = objectPath
 		}
 
-		// log.Debugf("----> %++v", c)
+		// log.Printf("----> %++v", c)
 		constructors2 = append(constructors2, c)
 	}
 

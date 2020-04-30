@@ -3,11 +3,12 @@ package service
 import (
 	"fmt"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/api"
 	"github.com/muka/go-bluetooth/bluez"
 	"github.com/muka/go-bluetooth/bluez/profile/gatt"
-	log "github.com/sirupsen/logrus"
 )
 
 type CharReadCallback func(c *Char, options map[string]interface{}) ([]byte, error)
@@ -135,7 +136,7 @@ func (s *Char) AddDescr(descr *Descr) error {
 
 	s.descr[descr.Path()] = descr
 
-	log.Tracef("Added GATT Descriptor UUID=%s %s", descr.UUID, descr.Path())
+	log.Printf("Added GATT Descriptor UUID=%s %s", descr.UUID, descr.Path())
 
 	err = s.App().ExportTree()
 	return err

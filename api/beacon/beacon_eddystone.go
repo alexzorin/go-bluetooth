@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
+	"log"
 )
 
 const eddystoneSrvcUid = "FEAA"
@@ -61,7 +61,7 @@ func (b *Beacon) ParseEddystone(frames []byte) BeaconEddystone {
 			info.Frame = EddystoneFrameURL
 			err := parseEddystoneURL(&info, frames)
 			if err != nil {
-				log.Warn(err)
+				log.Println(err)
 			}
 		}
 
@@ -103,7 +103,7 @@ func parseEddystoneUID(info *BeaconEddystone, frames []byte) {
 	iuid := hex.EncodeToString(frames[12:18])
 	iuid = strings.ToUpper(iuid)
 
-	// log.Debugf("%s - %s", uid, iuid)
+	// log.Printf("%s - %s", uid, iuid)
 
 	info.CalibratedTxPower = int(frames[1] & 0xff)
 	info.UID = uid

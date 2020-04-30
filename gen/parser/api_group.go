@@ -8,7 +8,7 @@ import (
 	"github.com/muka/go-bluetooth/gen/types"
 	"github.com/muka/go-bluetooth/gen/util"
 
-	log "github.com/sirupsen/logrus"
+	"log"
 )
 
 type ApiGroupParser struct {
@@ -34,7 +34,7 @@ func (g *ApiGroupParser) Parse(srcFile string) (*types.ApiGroup, error) {
 	apiGroup := g.model
 
 	if g.debug {
-		log.Debugf("------------------- Parsing %s -------------------", srcFile)
+		log.Printf("------------------- Parsing %s -------------------", srcFile)
 	}
 
 	apiGroup.FileName = filepath.Base(srcFile)
@@ -65,7 +65,7 @@ func (g *ApiGroupParser) Parse(srcFile string) (*types.ApiGroup, error) {
 	groupText := raw[:matches1[0][0]]
 	g.parseGroup(groupText)
 
-	// log.Debugf("%d", matches1)
+	// log.Printf("%d", matches1)
 
 	slices := make([][]byte, 0)
 	if len(matches1) == 1 {
@@ -87,7 +87,7 @@ func (g *ApiGroupParser) Parse(srcFile string) (*types.ApiGroup, error) {
 			serviceRaw := raw[prevPos:currPos]
 			prevPos = currPos
 
-			// log.Debugf("%s", serviceRaw)
+			// log.Printf("%s", serviceRaw)
 
 			if len(serviceRaw) > 0 {
 				slices = append(slices, serviceRaw)
@@ -125,10 +125,10 @@ func (g *ApiGroupParser) parseGroup(raw []byte) {
 	re := regexp.MustCompile(`(.+)\n[*]+\n(.*)`)
 	matches := re.FindAllSubmatchIndex(raw, -1)
 
-	// log.Debugf("\nRAW\n%s\n\n/RAW\n", raw)
+	// log.Printf("\nRAW\n%s\n\n/RAW\n", raw)
 	// for _, m1 := range matches {
 	// 	// for _, m := range m1 {
-	// 	log.Debugf("> %v", m1)
+	// 	log.Printf("> %v", m1)
 	// 	// }
 	// }
 
@@ -136,6 +136,6 @@ func (g *ApiGroupParser) parseGroup(raw []byte) {
 	g.model.Description = string(raw[matches[0][1]+1:])
 
 	if g.debug {
-		log.Debugf("* %s", g.model.Name)
+		log.Printf("* %s", g.model.Name)
 	}
 }

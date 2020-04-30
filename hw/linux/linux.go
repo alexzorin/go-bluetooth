@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"strconv"
 
+	"log"
+
 	"github.com/muka/go-bluetooth/hw/linux/btmgmt"
 	"github.com/muka/go-bluetooth/hw/linux/hci"
 	"github.com/muka/go-bluetooth/hw/linux/hciconfig"
-	log "github.com/sirupsen/logrus"
 )
 
 type BackendType string
@@ -131,7 +132,7 @@ func Down(adapterID string) error {
 func Reset(adapterID string) error {
 	err := Down(adapterID)
 	if err != nil {
-		log.Warnf("Down failed: %s", err)
+		log.Printf("Down failed: %s", err)
 	}
 	return Up(adapterID)
 }

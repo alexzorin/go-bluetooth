@@ -28,7 +28,7 @@ func RootTemplate(filename string, api *types.ApiGroup) error {
 		return fmt.Errorf("write tpl: %s", err)
 	}
 
-	// log.Debugf("Created %s", filename)
+	// log.Printf("Created %s", filename)
 	return nil
 }
 
@@ -66,7 +66,7 @@ func ErrorsTemplate(filename string, apis []*types.ApiGroup) error {
 		return fmt.Errorf("tpl write: %s", err)
 	}
 
-	// log.Debugf("Created %s", filename)
+	// log.Printf("Created %s", filename)
 	return nil
 }
 
@@ -110,6 +110,6 @@ func InterfacesTemplate(filename string, apis []types.ApiGroup) error {
 		return fmt.Errorf("tpl write: %s", err)
 	}
 
-	// log.Debugf("Created %s", filename)
+	// log.Printf("Created %s", filename)
 	return nil
 }

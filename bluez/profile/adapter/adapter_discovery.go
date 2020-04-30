@@ -1,10 +1,11 @@
 package adapter
 
 import (
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/bluez"
 	"github.com/muka/go-bluetooth/bluez/profile/device"
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -60,7 +61,7 @@ func (a *Adapter1) OnDeviceDiscovered() (chan *DeviceDiscovered, func(), error) 
 				ifaces := v.Body[1].([]string)
 				for _, iface := range ifaces {
 					if iface == device.Device1Interface {
-						log.Tracef("Removed device %s", path)
+						log.Printf("Removed device %s", path)
 						ch <- &DeviceDiscovered{path, op}
 					}
 				}
@@ -72,7 +73,7 @@ func (a *Adapter1) OnDeviceDiscovered() (chan *DeviceDiscovered, func(), error) 
 				if p == nil {
 					continue
 				}
-				log.Tracef("Added device %s", path)
+				log.Printf("Added device %s", path)
 				ch <- &DeviceDiscovered{path, op}
 			}
 

@@ -5,9 +5,10 @@ import (
 	"os"
 	"strings"
 
+	"log"
+
 	"github.com/muka/go-bluetooth/gen/override"
 	"github.com/muka/go-bluetooth/gen/types"
-	log "github.com/sirupsen/logrus"
 )
 
 func ApiTemplate(filename string, api *types.Api, apiGroup *types.ApiGroup) error {
@@ -73,7 +74,7 @@ func ApiTemplate(filename string, api *types.Api, apiGroup *types.ApiGroup) erro
 				prop.RawType = getRawType(prop.Property.Type)
 				prop.RawTypeInitializer = getRawTypeInitializer(prop.Property.Type)
 				prop.Property.Type = propType
-				// log.Debugf("props --> %s %s", propName, propType)
+				// log.Printf("props --> %s %s", propName, propType)
 			} else {
 				prop = &types.PropertyDoc{
 					Property: &types.Property{
@@ -131,7 +132,7 @@ func ApiTemplate(filename string, api *types.Api, apiGroup *types.ApiGroup) erro
 
 		if !importDbus {
 			importDbus = strings.Contains(mm.ArgsList, "dbus.")
-			log.Debugf("%t %s", importDbus, mm.ArgsList)
+			log.Printf("%t %s", importDbus, mm.ArgsList)
 		}
 		if !importDbus {
 			importDbus = strings.Contains(mm.ParamsList, "dbus.")
@@ -147,7 +148,7 @@ func ApiTemplate(filename string, api *types.Api, apiGroup *types.ApiGroup) erro
 			mm.Method.ReturnType = "error"
 		} else {
 
-			// log.Debugf("With return type %s", mm.Method.ReturnType)
+			// log.Printf("With return type %s", mm.Method.ReturnType)
 
 			returnTypes := strings.Split(mm.Method.ReturnType, ", ")
 			defs := []string{}
@@ -240,6 +241,6 @@ func ApiTemplate(filename string, api *types.Api, apiGroup *types.ApiGroup) erro
 		return fmt.Errorf("api tpl: %s", err)
 	}
 
-	// log.Debugf("Created %s", filename)
+	// log.Printf("Created %s", filename)
 	return nil
 }

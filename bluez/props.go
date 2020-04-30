@@ -3,9 +3,10 @@ package bluez
 import (
 	"reflect"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/util"
-	log "github.com/sirupsen/logrus"
 )
 
 type WatchableClient interface {
@@ -66,7 +67,7 @@ func WatchProperties(wprop WatchableClient) (chan *PropertyChanged, error) {
 						// map[*]variant -> map[*]interface{}
 						ok, err := util.AssignMapVariantToInterface(f, x)
 						if err != nil {
-							log.Errorf("Failed to set %s: %s", f.String(), err)
+							log.Printf("Failed to set %s: %s", f.String(), err)
 							continue
 						}
 						// direct assignment

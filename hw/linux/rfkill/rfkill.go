@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
+	"log"
 )
 
 func limitText(text []byte) string {
@@ -93,7 +93,7 @@ func (self RFKill) SoftBlock(identifier string) error {
 	cmd := exec.Command("rfkill", "block", identifier)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Errorf("Command Error: %v : %v", err, limitText(out))
+		log.Printf("Command Error: %v : %v", err, limitText(out))
 		return err
 	}
 
@@ -106,7 +106,7 @@ func (self RFKill) SoftUnblock(identifier string) error {
 	cmd := exec.Command("rfkill", "unblock", identifier)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Errorf("Command Error: %v : %v", err, limitText(out))
+		log.Printf("Command Error: %v : %v", err, limitText(out))
 		return err
 	}
 
@@ -158,7 +158,7 @@ func (self RFKill) IsBlockedAfterUnblocking(identifier string) bool {
 	if self.IsBlocked(identifier) {
 		err := self.SoftUnblock(identifier)
 		if err != nil {
-			log.Warn(err)
+			log.Println(err)
 		}
 
 		if self.IsBlocked(identifier) {

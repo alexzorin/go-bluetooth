@@ -1,11 +1,12 @@
 package api
 
 import (
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/godbus/dbus/introspect"
 	"github.com/godbus/dbus/prop"
 	"github.com/muka/go-bluetooth/bluez"
-	log "github.com/sirupsen/logrus"
 )
 
 type ExposedDBusService interface {
@@ -43,7 +44,7 @@ func ExposeDBusService(s ExposedDBusService) (err error) {
 		}
 	}
 
-	log.Tracef("Expose %s (%s)", s.Path(), s.Interface())
+	log.Printf("Expose %s (%s)", s.Path(), s.Interface())
 	err = conn.Export(s, s.Path(), s.Interface())
 	if err != nil {
 		return err
@@ -54,7 +55,7 @@ func ExposeDBusService(s ExposedDBusService) (err error) {
 		return err
 	}
 
-	log.Tracef("Expose Properties interface (%s)", s.Path())
+	log.Printf("Expose Properties interface (%s)", s.Path())
 	s.DBusProperties().Expose(s.Path())
 
 	node := &introspect.Node{

@@ -109,7 +109,7 @@ func castType(rawtype string) string {
 		pts2 := []string{}
 		for _, pt := range pts {
 			pts1 := strings.Split(pt, " ")
-			// log.Debug("pts1 ", pts1[0])
+			// log.Println("pts1 ", pts1[0])
 			if len(pts1) == 2 {
 				pts2 = append(pts2, pts1[0])
 			}
@@ -122,11 +122,11 @@ func castType(rawtype string) string {
 		// array{ string, string } ==> []string, string
 		typedef = "[]" + toType(subtype)
 
-		// log.Debugf("type casting %s -> %s\n", rawtype, typedef)
+		// log.Printf("type casting %s -> %s\n", rawtype, typedef)
 	}
 
 	typedef = toType(typedef)
-	// log.Debugf("type casting %s -> %s\n", rawtype, typedef)
+	// log.Printf("type casting %s -> %s\n", rawtype, typedef)
 
 	return typedef
 }

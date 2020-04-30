@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"reflect"
 
+	"log"
+
 	"github.com/godbus/dbus"
-	log "github.com/sirupsen/logrus"
 )
 
 func AssignMapVariantToInterface(mapVal reflect.Value, mapVariant reflect.Value) (bool, error) {
@@ -38,13 +39,13 @@ func AssignMapVariantToInterface(mapVal reflect.Value, mapVariant reflect.Value)
 
 	// receiving value is interface{}
 	if mapValValue.Kind() != reflect.Interface {
-		log.Debugf("val is not interface")
+		log.Printf("val is not interface")
 		return false, nil
 	}
 
 	// source value is dbus.Variant
 	if mapVariantValue.Kind() != reflect.TypeOf(dbus.Variant{}).Kind() {
-		log.Debugf("mapVariant value is not variant")
+		log.Printf("mapVariant value is not variant")
 		return false, nil
 	}
 
@@ -53,7 +54,7 @@ func AssignMapVariantToInterface(mapVal reflect.Value, mapVariant reflect.Value)
 
 	for _, key := range mapVariant.MapKeys() {
 		variantInnerValue := mapVariant.MapIndex(key).MethodByName("Value").Call([]reflect.Value{})
-		// log.Debugf("variantInnerValue %++v", variantInnerValue)
+		// log.Printf("variantInnerValue %++v", variantInnerValue)
 		mapValInstance.SetMapIndex(key, variantInnerValue[0])
 	}
 
@@ -83,8 +84,8 @@ func mapStructField(obj interface{}, name string, value dbus.Variant) error {
 		return nil
 	}
 
-	// log.Debugf("structFieldType %++v", structFieldType)
-	// log.Debugf("val.Type() %++v", val.Type())
+	// log.Printf("structFieldType %++v", structFieldType)
+	// log.Printf("val.Type() %++v", val.Type())
 
 	if val.Type().Kind() == reflect.Map {
 
@@ -115,7 +116,7 @@ func mapStructField(obj interface{}, name string, value dbus.Variant) error {
 	}
 
 	if val.Type().Kind() == reflect.Array {
-		log.Warn("@TODO type array to interface{} is not implemented")
+		log.Println("@TODO type array to interface{} is not implemented")
 	}
 
 	return fmt.Errorf("Mismatching types for field=%s object=%s props=%s", name, structFieldType, val.Type())

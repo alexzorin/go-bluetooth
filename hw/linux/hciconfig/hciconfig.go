@@ -25,7 +25,7 @@ func GetAdapters() ([]HCIConfigResult, error) {
 		list = append(list, cfg)
 	}
 
-	// log.Debugf("%++v", list)
+	// log.Printf("%++v", list)
 
 	return list, nil
 }

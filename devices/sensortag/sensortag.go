@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"time"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/bluez/profile/device"
 	"github.com/muka/go-bluetooth/bluez/profile/gatt"
-	log "github.com/sirupsen/logrus"
 )
 
 // DefaultRetry times
@@ -154,12 +155,12 @@ func retryCall(times int, sleep int64, fn func() (interface{}, error)) (intf int
 func NewSensorTag(d *device.Device1) (*SensorTag, error) {
 
 	if !d.Properties.Connected {
-		log.Debug("Connecting")
+		log.Println("Connecting")
 		err := d.Connect()
 		if err != nil {
 			return nil, err
 		}
-		log.Debug("Connected")
+		log.Println("Connected")
 	}
 
 	s := new(SensorTag)

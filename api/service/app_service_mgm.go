@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"strings"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/api"
 	"github.com/muka/go-bluetooth/bluez"
-	log "github.com/sirupsen/logrus"
 )
 
 func (app *App) GetServices() map[dbus.ObjectPath]*Service {
@@ -49,7 +50,7 @@ func (app *App) AddService(s *Service) error {
 		return err
 	}
 
-	log.Tracef("Added GATT Service UUID=%s %s", s.UUID, s.Path())
+	log.Printf("Added GATT Service UUID=%s %s", s.UUID, s.Path())
 
 	return nil
 }

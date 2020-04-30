@@ -3,10 +3,11 @@ package api
 import (
 	"errors"
 
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/bluez"
 	"github.com/muka/go-bluetooth/bluez/profile"
-	log "github.com/sirupsen/logrus"
 )
 
 // NewDBusObjectManager create a new instance
@@ -71,7 +72,7 @@ func (o *DBusObjectManager) GetManagedObjects() (map[dbus.ObjectPath]map[string]
 			}
 			l, err := m.ToMap()
 			if err != nil {
-				log.Errorf("Failed to serialize properties: %s", err.Error())
+				log.Printf("Failed to serialize properties: %s", err.Error())
 				return nil, &profile.ErrInvalidArguments
 			}
 			for k, v := range l {
@@ -86,14 +87,14 @@ func (o *DBusObjectManager) GetManagedObjects() (map[dbus.ObjectPath]map[string]
 
 //AddObject add an object to the list
 func (o *DBusObjectManager) AddObject(path dbus.ObjectPath, val map[string]bluez.Properties) error {
-	log.Tracef("ObjectManager.AddObject: %s", path)
+	log.Printf("ObjectManager.AddObject: %s", path)
 	o.objects[path] = val
 	return o.SignalAdded(path)
 }
 
 //RemoveObject remove an object from the list
 func (o *DBusObjectManager) RemoveObject(path dbus.ObjectPath) error {
-	log.Tracef("ObjectManager.RemoveObject: %s", path)
+	log.Printf("ObjectManager.RemoveObject: %s", path)
 	if s, ok := o.objects[path]; ok {
 		delete(o.objects, path)
 		ifaces := make([]string, len(s))

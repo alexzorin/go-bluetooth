@@ -1,9 +1,10 @@
 package obex
 
 import (
+	"log"
+
 	"github.com/godbus/dbus"
 	"github.com/muka/go-bluetooth/bluez"
-	log "github.com/sirupsen/logrus"
 )
 
 // TODO: https://github.com/blueman-project/blueman/issues/218#issuecomment-89315974
@@ -55,7 +56,7 @@ func (a *ObexClient1) Close() {
 //
 // TODO: Use ObexSession1 struct instead of generic map for options
 func (a *ObexClient1) CreateSession(destination string, options map[string]interface{}) (string, error) {
-	log.Debugf("CreateSession to %s", destination)
+	log.Printf("CreateSession to %s", destination)
 	var sessionPath string
 	err := a.client.Call("CreateSession", 0, destination, options).Store(&sessionPath)
 	return sessionPath, err

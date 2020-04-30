@@ -3,8 +3,9 @@ package parser
 import (
 	"regexp"
 
+	"log"
+
 	"github.com/muka/go-bluetooth/gen/types"
-	log "github.com/sirupsen/logrus"
 )
 
 func (g *ApiParser) ParseMethods(raw []byte) ([]*types.Method, error) {
@@ -22,11 +23,11 @@ func (g *ApiParser) ParseMethods(raw []byte) ([]*types.Method, error) {
 		if len(matches1) == 1 {
 			matches1 = append(matches1, matches1[0])
 		}
-		// log.Debugf("matches1 %s", matches1[1:])
+		// log.Printf("matches1 %s", matches1[1:])
 	}
 
-	// log.Debugf("matches1 %s", matches1[:1])
-	// log.Debugf("%s", matches1)
+	// log.Printf("matches1 %s", matches1[:1])
+	// log.Printf("%s", matches1)
 
 	for _, methodsRaw := range matches1[1:] {
 
@@ -66,14 +67,14 @@ func (g *ApiParser) ParseMethods(raw []byte) ([]*types.Method, error) {
 	}
 
 	if g.debug {
-		log.Debug("\tMethods:")
+		log.Println("\tMethods:")
 	}
 
 	for _, methodRaw := range slices {
 		methodParser := NewMethodParser(g.debug)
 		method, err := methodParser.Parse(methodRaw)
 		if err != nil {
-			log.Warnf("Skip method: %s", err)
+			log.Printf("Skip method: %s", err)
 			continue
 		}
 		methods = append(methods, method)

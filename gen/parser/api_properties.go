@@ -3,8 +3,9 @@ package parser
 import (
 	"regexp"
 
+	"log"
+
 	"github.com/muka/go-bluetooth/gen/types"
-	log "github.com/sirupsen/logrus"
 )
 
 func (g *ApiParser) ParseProperties(raw []byte) ([]*types.Property, error) {
@@ -26,18 +27,18 @@ func (g *ApiParser) ParseProperties(raw []byte) ([]*types.Property, error) {
 		re1 := regexp.MustCompile(`(?s)[ \t]*` + propBaseRegexp + `.*?\n`)
 		matches2 := re1.FindAllSubmatchIndex(propsRaw, -1)
 
-		// log.Debugf("1*** %d", matches2)
+		// log.Printf("1*** %d", matches2)
 
 		// if len(matches2) == 0 {
 		// re1 := regexp.MustCompile(`[ \t]*(bool|byte|string|uint|dict|array.*) ([A-Za-z0-9_]+?)( ?) *\n`)
 		// matches2 := re1.FindAllSubmatchIndex(propsRaw, -1)
 		// }
 
-		// log.Debugf("2 *** %d", matches2)
+		// log.Printf("2 *** %d", matches2)
 
 		if len(matches2) == 1 {
 			if len(propsRaw) > 0 {
-				// log.Debugf("ADD single *** %s", propsRaw)
+				// log.Printf("ADD single *** %s", propsRaw)
 				slices = append(slices, propsRaw)
 			}
 		} else {
@@ -70,14 +71,14 @@ func (g *ApiParser) ParseProperties(raw []byte) ([]*types.Property, error) {
 	}
 
 	if g.debug {
-		log.Debug("\tProperties:")
+		log.Println("\tProperties:")
 	}
 
 	for _, propRaw := range slices {
 		propertyParser := NewPropertyParser(g.debug)
 		prop, err := propertyParser.Parse(propRaw)
 		if err != nil {
-			log.Warnf("Skipped property: %s", err)
+			log.Printf("Skipped property: %s", err)
 			continue
 		}
 		props = append(props, prop)

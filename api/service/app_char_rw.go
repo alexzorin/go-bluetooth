@@ -1,8 +1,9 @@
 package service
 
 import (
+	"log"
+
 	"github.com/godbus/dbus"
-	log "github.com/sirupsen/logrus"
 )
 
 // Confirm This method doesn't expect a reply so it is just a
@@ -10,7 +11,7 @@ import (
 //
 // Possible Errors: org.bluez.Error.Failed
 func (s *Char) Confirm() *dbus.Error {
-	log.Debug("Char.Confirm")
+	log.Println("Char.Confirm")
 	return nil
 }
 
@@ -22,7 +23,7 @@ func (s *Char) Confirm() *dbus.Error {
 // 		 org.bluez.Error.InProgress
 // 		 org.bluez.Error.NotSupported
 func (s *Char) StartNotify() *dbus.Error {
-	log.Debug("Char.StartNotify")
+	log.Println("Char.StartNotify")
 	return nil
 }
 
@@ -33,7 +34,7 @@ func (s *Char) StartNotify() *dbus.Error {
 //
 // Possible Errors: org.bluez.Error.Failed
 func (s *Char) StopNotify() *dbus.Error {
-	log.Debug("Char.StopNotify")
+	log.Println("Char.StopNotify")
 	return nil
 }
 
@@ -52,7 +53,7 @@ func (s *Char) StopNotify() *dbus.Error {
 // 		 org.bluez.Error.NotSupported
 func (s *Char) ReadValue(options map[string]interface{}) ([]byte, *dbus.Error) {
 
-	log.Debug("Characteristic.ReadValue")
+	log.Println("Characteristic.ReadValue")
 	if s.readCallback != nil {
 		b, err := s.readCallback(s, options)
 		if err != nil {
@@ -82,18 +83,18 @@ func (s *Char) ReadValue(options map[string]interface{}) ([]byte, *dbus.Error) {
 // 		 org.bluez.Error.NotSupported
 func (s *Char) WriteValue(value []byte, options map[string]interface{}) *dbus.Error {
 
-	log.Trace("Characteristic.WriteValue")
+	log.Println("Characteristic.WriteValue")
 
 	val := value
 	if s.writeCallback != nil {
-		log.Trace("Used write callback")
+		log.Println("Used write callback")
 		b, err := s.writeCallback(s, value)
 		val = b
 		if err != nil {
 			return dbus.MakeFailedError(err)
 		}
 	} else {
-		log.Trace("Store directly to value (no callback)")
+		log.Println("Store directly to value (no callback)")
 	}
 
 	// TODO update on Properties interface
