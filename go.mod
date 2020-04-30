@@ -9,7 +9,7 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.5.0
-	github.com/stretchr/testify v1.5.1
+	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/suapapa/go_eddystone v0.0.0-20190827074641-8d8c1bb79363
 	golang.org/x/sys v0.0.0-20200331124033-c3d80250170d
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
